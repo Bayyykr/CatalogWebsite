@@ -9,10 +9,20 @@ $scriptDir = str_replace('\\', '/', $scriptDir); // Normalize for Windows
 define('BASE_URL', rtrim((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . $scriptDir, '/') . '/');
 
 // Database credentials (placeholder values)
-define('DB_HOST', 'localhost');
-define('DB_NAME', 'catalogue_db');
-define('DB_USER', 'root');
-define('DB_PASS', '');
+if (getenv('DB_HOST')) {
+    define('DB_HOST', getenv('DB_HOST'));
+    define('DB_NAME', getenv('DB_NAME'));
+    define('DB_USER', getenv('DB_USER'));
+    define('DB_PASS', getenv('DB_PASS'));
+    define('DB_PORT', getenv('DB_PORT')); // biasanya diperlukan
+} else {
+    // Jika berjalan lokal
+    define('DB_HOST', 'localhost');
+    define('DB_NAME', 'catalogue_db');
+    define('DB_USER', 'root');
+    define('DB_PASS', '');
+    define('DB_PORT', '3306');
+}
 
 // Autoloader for App and Core namespaces
 spl_autoload_register(function ($class) {
